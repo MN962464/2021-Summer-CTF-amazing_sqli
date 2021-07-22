@@ -1,0 +1,14 @@
+# QWB 2019 SuperSqli
+
+version: "2"
+
+services:
+
+  web:
+    build: .
+    image: lalala:test17
+    restart: always
+    ports:
+      - "10.67.4.152:8302:80"
+    environment:
+      - FLAG=L3RoaXNfaXNfYWFhYWFhX2hpbnQuanBnCg==
