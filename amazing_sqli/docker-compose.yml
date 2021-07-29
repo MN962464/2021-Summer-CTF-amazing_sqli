@@ -6,9 +6,9 @@ services:
 
   web:
     build: .
-    image: lalala:test17
+    image: lalala:test24
     restart: always
     ports:
-      - "10.67.4.152:8302:80"
+      - "127.0.0.1:8302:80"
     environment:
       - FLAG=L3RoaXNfaXNfYWFhYWFhX2hpbnQuanBnCg==

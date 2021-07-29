@@ -1,68 +1,105 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-<title>come to find tips</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<link rel="stylesheet" href="css/style.css" type="text/css" media="all">
+<meta charset="UTF-8">
+<title>Log In / Sign Up</title>
+<link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/css/bootstrap.min.css'>
+<link rel='stylesheet' href='https://unicons.iconscout.com/release/v2.1.9/css/unicons.css'>
+<link rel="stylesheet" href="./style.css">
 </head>
 <body>
-<div class="banner">
-  <div class="agileinfo-dot">
-    <h1>谁是世界上最美的人？</h1>
-    <div class="w3layoutscontaineragileits">
-      <h2>请留言</h2>
-      <form method="get">
-        <input type="text" name="inject">
-        <div class="aitssendbuttonw3ls">
-          <input type="submit" value="提交">
+<div class="section">
+  <div class="container">
+    <div class="row full-height justify-content-center">
+      <div class="col-12 text-center align-self-center py-5">
+        <div class="section pb-5 pt-5 pt-sm-2 text-center">
+          <h6 class="mb-0 pb-3"><span>Log In </span><span>Sign Up</span></h6>
+          <input class="checkbox" type="checkbox" id="reg-log" name="reg-log" />
+          <label for="reg-log"></label>
+          <div class="card-3d-wrap mx-auto">
+            <div class="card-3d-wrapper">
+              <div class="card-front">
+                <div class="center-wrap">
+                  <div class="section text-center">
+                    <h4 class="mb-4 pb-3">Log In</h4>
+                    <div class="form-group">
+                      <input type="email" name="logemail" class="form-style" placeholder="Your Email" id="logemail" autocomplete="off">
+                      <i class="input-icon uil uil-at"></i></div>
+                    <div class="form-group mt-2">
+                      <input type="password" name="logpass" class="form-style" placeholder="Your Password" id="logpass" autocomplete="off">
+                      <i class="input-icon uil uil-lock-alt"></i></div>
+                    <a href="#" class="btn mt-4" onClick="location='board.html'">submit</a>
+                    <p class="mb-0 mt-4 text-center"><a href="#0" class="link">Forgot your password?</a></p>
+                  </div>
+                </div>
+              </div>
+              <div class="card-back">
+                <div class="center-wrap">
+                  <div class="section text-center">
+                    <h4 class="mb-4 pb-3">Sign Up</h4>
+                    <div class="form-group">
+                      <input type="text" name="logname" class="form-style" placeholder="Your Full Name" id="logname" autocomplete="off">
+                      <i class="input-icon uil uil-user"></i></div>
+                    <div class="form-group mt-2">
+                      <input type="email" name="logemail" class="form-style" placeholder="Your Email" id="logemail" autocomplete="off">
+                      <i class="input-icon uil uil-at"></i></div>
+                    <div class="form-group mt-2">
+                      <input type="password" name="logpass" class="form-style" placeholder="Your Password" id="logpass" autocomplete="off">
+                      <i class="input-icon uil uil-lock-alt"></i></div>
+                    <a href="#" class="btn mt-4" onClick="location='board.html'">submit</a></div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-      </form>
+      </div>
     </div>
   </div>
 </div>
+<!-- partial -->
+<script src="./script.js"></script>
 <pre>
-<?php
-function waf1($inject) {
-    preg_match("/select|update|delete|drop|insert|where|\./i",$inject) && die('察觉到你尝试攻击,请停止sql注入');
+<?php 
+
+$conn = mysqli_connect('127.0.0.1','root','root','cometosql') or die('数据库连接失败');
+
+$conn->set_charset('utf8');
+
+$name = $_POST['logname'];
+
+$email = $_POST['logemail'];
+
+$pass = $_POST['logpass'];
+
+
+if(!empty($name)){
+
+	$sql = "INSERT INTO users(user,pass,email)
+
+	VALUES ('{$name}' ,'{$pass}','{$email}')";
+
+	mysqli_query($conn,$sql) or die(mysqli_error($conn));
+
+	echo("注册成功！");
 }
 
-function waf2($inject) {
-    strstr($inject, "set") && strstr($inject, "prepare") && die('察觉到你尝试攻击,请停止sql注入');
+else{
+	$sql="SELECT * FROM users where email='{$email}' and pass='{$pass}'";
+
+	$result=$conn->query($sql);
+
+	$row = mysqli_num_rows($result);
 }
 
-if(isset($_GET['inject'])) {
-    $id = $_GET['inject'];
-    waf1($id);
-    waf2($id);
-    $mysqli = new mysqli("127.0.0.1","root","root","cometosql");
-    //多条sql语句
-    $sql = "select * from `come_on` where id = '$id';";
+if($row == 1){
 
-    $res = $mysqli->multi_query($sql);
-
-    if ($res){//使用multi_query()执行一条或多条sql语句
-      do{
-        if ($rs = $mysqli->store_result()){
-          while ($row = $rs->fetch_row()){
-            var_dump($row);
-            echo "<br>";
-          }
-          $rs->Close(); 
-          if ($mysqli->more_results()){ 
-            echo "<hr>";
-          }
-        }
-      }while($mysqli->next_result()); 
-    } else {
-      echo "error ".$mysqli->errno." : ".$mysqli->error;
-    }
-    $mysqli->close(); 
+echo $row['user']."登陆成功!";
 }
 
+else{
+echo"登录失败，请重新登录！";
 
-?>
+}?>
 </pre>
-
 </body>
-
 </html>

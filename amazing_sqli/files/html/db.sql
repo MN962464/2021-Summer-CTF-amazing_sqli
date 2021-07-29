@@ -2,6 +2,17 @@ CREATE DATABASE IF NOT EXISTS cometosql;
 
 USE cometosql;
 
+DROP TABLE IF EXISTS `users`;
+CREATE TABLE IF NOT EXISTS `users` (
+  `user` char(11) NOT NULL COMMENT '用户名',
+  `pass` char(11) NOT NULL COMMENT '密码',
+  `email` char(100) NOT NULL COMMENT '电子邮件',
+  PRIMARY KEY (`user`,`pass`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+
+INSERT INTO `users` values('admin','55678@@','mai_ning@cuc.edu.cn');
+
 CREATE TABLE IF NOT EXISTS `come_on` (
   `id` int(10) NOT NULL,
   `data` varchar(20) NOT NULL
